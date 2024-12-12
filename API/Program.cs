@@ -1,4 +1,9 @@
 
+using BLL.Service;
+using BLL.Service.Base;
+using DAL;
+using Microsoft.EntityFrameworkCore;
+
 namespace API;
 
 public class Program
@@ -7,14 +12,21 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         
+        builder.Services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+        });
+        
         // builder.Services.AddAuthorization();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         
+        builder.Services.AddScoped<IApiVersionService, ApiVersionService>();
+        
         builder.Services.AddControllers();
+        
         var app = builder.Build();
         
-
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
