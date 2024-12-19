@@ -1,39 +1,22 @@
-﻿using System.Security.Cryptography;
-using DAL;
-using DAL.Entities;
+﻿using DAL.Entities;
+using DAL.Repositories;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace BLL.Services;
 
 public class UserService
 {
-    private readonly AppDbContext _context;
+    private readonly IUserRepository _userRepository;
 
-    public UserService(AppDbContext context)
+    public UserService(IUserRepository userRepository)
     {
-        _context = context;
+        _userRepository = userRepository;
     }
 
     public void RegisterUser(string email, string password, string userName, string firstName, string lastName, string phoneNumber)
     {
-        // Генерація сольового значення
-        var salt = new byte[16];
-        using (var rng = new RNGCryptoServiceProvider())
-        {
-            rng.GetBytes(salt);
-        }
+        var passwordHash = HashPassword(password);
 
-        // Хешування пароля
-        var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-        var hash = pbkdf2.GetBytes(20);
-
-        // Комбінування хешу та солі
-        var hashBytes = new byte[36];
-        Array.Copy(salt, 0, hashBytes, 0, 16);
-        Array.Copy(hash, 0, hashBytes, 16, 20);
-
-        var passwordHash = Convert.ToBase64String(hashBytes);
-
-        // Створення користувача
         var user = new User
         {
             Email = email,
@@ -46,7 +29,62 @@ public class UserService
             UpdatedAt = DateTime.UtcNow
         };
 
-        _context.Users.Add(user);
-        _context.SaveChanges();
+        _userRepository.AddUser(user);
+        _userRepository.SaveChanges();
+    }
+
+    public User AuthenticateUser(string email, string password)
+    {
+        var user = _userRepository.GetUserByEmail(email);
+        if (user == null || !VerifyPasswordHash(password, user.PasswordHash))
+        {
+            return null;
+        }
+        return user;
+    }
+
+    public bool UserExists(string email)
+    {
+        return _userRepository.UserExists(email);
+    }
+
+    private bool VerifyPasswordHash(string password, string storedHash)
+    {
+        var hashBytes = Convert.FromBase64String(storedHash);
+        var salt = new byte[16];
+        Array.Copy(hashBytes, 0, salt, 0, 16);
+
+        var hashToCompare = KeyDerivation.Pbkdf2(
+            password: password,
+            salt: salt,
+            prf: KeyDerivationPrf.HMACSHA256,
+            iterationCount: 10000,
+            numBytesRequested: 20
+        );
+
+        return hashBytes.Skip(16).SequenceEqual(hashToCompare);
+    }
+
+    private string HashPassword(string password)
+    {
+        var salt = new byte[16];
+        using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
+        {
+            rng.GetBytes(salt);
+        }
+
+        var hash = KeyDerivation.Pbkdf2(
+            password: password,
+            salt: salt,
+            prf: KeyDerivationPrf.HMACSHA256,
+            iterationCount: 10000,
+            numBytesRequested: 20
+        );
+
+        var hashBytes = new byte[36];
+        Array.Copy(salt, 0, hashBytes, 0, 16);
+        Array.Copy(hash, 0, hashBytes, 16, 20);
+
+        return Convert.ToBase64String(hashBytes);
     }
 }

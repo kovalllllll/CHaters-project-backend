@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BLL.Services;
+using DAL.Repositories; 
 
 namespace API;
 
@@ -39,6 +41,11 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+       
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<UserService>();
+        builder.Services.AddScoped<JwtTokenService>();
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
@@ -49,9 +56,6 @@ public class Program
 
         app.UseHttpsRedirection();
 
-        
-        
-        // Підключаємо аутентифікацію та авторизацію
         app.UseAuthentication();
         app.UseAuthorization();
 
