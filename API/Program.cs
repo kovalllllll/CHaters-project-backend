@@ -1,6 +1,3 @@
-
-using BLL.Service;
-using BLL.Service.Base;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,8 +17,6 @@ public class Program
         // builder.Services.AddAuthorization();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        
-        builder.Services.AddScoped<IApiVersionService, ApiVersionService>();
         
         builder.Services.AddControllers();
         
