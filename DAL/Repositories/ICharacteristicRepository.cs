@@ -5,4 +5,6 @@ namespace DAL.Repositories;
 public interface ICharacteristicRepository:IRepository<Characteristic, Guid>
 {
     bool IsCharacteristicWithNameExists(string name);
+    Characteristic GetById(Guid id);
+    IEnumerable<Characteristic> GetAll();
 }

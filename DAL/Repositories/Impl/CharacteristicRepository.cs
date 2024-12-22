@@ -15,4 +15,14 @@ public class CharacteristicRepository: BaseRepository<Characteristic, Guid>, ICh
     {
         return _dbSet.Any(c => c.Name == name);
     }
+
+    public IEnumerable<Characteristic> GetAll()
+    {
+        return _dbSet.ToList();
+    }
+    
+    public Characteristic GetById(Guid id)
+    {
+        return _dbSet.FirstOrDefault(c => c.Id == id);
+    }
 }

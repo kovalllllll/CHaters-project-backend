@@ -5,4 +5,6 @@ namespace BLL.Services;
 public interface ICharacteristicService
 {
     Characteristic CreateCharacteristic(Characteristic characteristic);
+    List<Characteristic> GetAllCharacteristics();
+    Characteristic GetCharacteristicById(Guid id);
 }

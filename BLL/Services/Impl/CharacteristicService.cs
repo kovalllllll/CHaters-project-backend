@@ -1,5 +1,6 @@
 ﻿using BLL.Exceptions;
 using DAL.Entities;
+using DAL.Exceptions;
 using DAL.Repositories;
 
 namespace BLL.Services.Impl;
@@ -25,5 +26,29 @@ public class CharacteristicService : ICharacteristicService
         _characteristicRepository.SaveChanges();
 
         return createdCharacteristic;
+    }
+
+    public List<Characteristic> GetAllCharacteristics()
+    {
+        var characteristics = _characteristicRepository.GetAll().ToList();
+        
+        if (characteristics.Count == 0)
+        {
+            throw new NotFoundException("No characteristics found");
+        }
+
+        return characteristics;
+    }
+
+    public Characteristic GetCharacteristicById(Guid id)
+    {
+        var characteristic = _characteristicRepository.GetById(id);
+        
+        if (characteristic == null)
+        {
+            throw new NotFoundException($"Characteristic with id {id} not found");
+        }
+
+        return characteristic;
     }
 }
