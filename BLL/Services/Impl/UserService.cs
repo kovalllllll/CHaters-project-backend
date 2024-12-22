@@ -17,7 +17,7 @@ public class UserService : IUserService
     {
         if (_userRepository.IsUserWithEmailExists(user.Email))
         {
-            throw new AlreadyExistException($"User with email '{user.Email}' already exists");
+            throw new UserAlreadyExistException($"User with email '{user.Email}' already exists");
         }
         
         var createdUser = _userRepository.Create(user);

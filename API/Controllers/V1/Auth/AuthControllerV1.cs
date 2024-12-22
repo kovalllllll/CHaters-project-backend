@@ -46,7 +46,7 @@ public class AuthControllerV1 : ControllerBase
         {
             createdUser = _userService.CreateUser(user);
         }
-        catch (AlreadyExistException e)
+        catch (UserAlreadyExistException e)
         {
             return BadRequest(e.Message);
         }
