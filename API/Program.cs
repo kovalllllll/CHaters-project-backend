@@ -1,4 +1,5 @@
 using API.Mappers.Users;
+using API.Mappers.Characteristics; // Додати ваш профіль для характеристик
 using API.Security;
 using API.Security.Impl;
 using BLL.Services;
@@ -21,17 +22,21 @@ public class Program
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
         });
         
-        // builder.Services.AddAuthorization();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddAutoMapper(typeof(UserMappingProfile));
+        // AutoMapper
+        builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(CharacteristicMappingProfile));
         
+        // Dependency Injection
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IPasswordEncoder, PasswordEncoder>();
         builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
-        
+        builder.Services.AddScoped<ICharacteristicRepository, CharacteristicRepository>();
+        builder.Services.AddScoped<ICharacteristicService, CharacteristicService>();
+        builder.Services.AddScoped<CharacteristicService>(); // Для безпосереднього використання класу
+
         builder.Services.AddControllers();
         
         var app = builder.Build();
@@ -44,7 +49,6 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseRouting();
-        // app.UseAuthorization();
         app.MapControllers();
         app.Run();
     }
