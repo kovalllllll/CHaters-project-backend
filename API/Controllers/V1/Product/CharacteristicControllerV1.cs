@@ -58,7 +58,7 @@ public class CharacteristicControllerV1 : ControllerBase
             return BadRequest(e.Message);
         }
     }
-    
+
     [HttpGet]
     [Route("{id}")]
     public IActionResult GetCharacteristicById([FromRoute] Guid id)
@@ -75,5 +75,43 @@ public class CharacteristicControllerV1 : ControllerBase
 
         var response = _mapper.Map<CharacteristicDto>(characteristic);
         return Ok(response);
+    }
+    
+    [HttpPut]
+    [Route("{id}")]
+    public IActionResult UpdateCharacteristic([FromRoute] Guid id, [FromQuery] string name)
+    {
+        var characteristic = _mapper.Map<Characteristic>(name);
+        characteristic.Id = id;
+
+        Characteristic updatedCharacteristic;
+        try
+        {
+            updatedCharacteristic = _characteristicService.UpdateCharacteristic(characteristic);
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+
+        var response = _mapper.Map<CharacteristicDto>(updatedCharacteristic);
+        return Ok(response);
+    }
+    
+
+    [HttpDelete]
+    [Route("{id}")]
+    public IActionResult DeleteCharacteristic([FromRoute] Guid id)
+    {
+        try
+        {
+            _characteristicService.DeleteCharacteristic(id);
+        }
+        catch (NotFoundException)
+        {
+            //ignored
+        }
+
+        return NoContent();
     }
 }

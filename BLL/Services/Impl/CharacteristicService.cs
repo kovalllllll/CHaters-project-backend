@@ -51,4 +51,29 @@ public class CharacteristicService : ICharacteristicService
 
         return characteristic;
     }
+    
+    public Characteristic UpdateCharacteristic(Characteristic characteristic)
+    {
+        var existingCharacteristic = _characteristicRepository.GetById(characteristic.Id);
+
+        if (existingCharacteristic == null)
+        {
+            throw new NotFoundException($"Characteristic with id {characteristic.Id} not found");
+        }
+        
+        existingCharacteristic.Name = characteristic.Name;
+
+        _characteristicRepository.Update(existingCharacteristic);
+        _characteristicRepository.SaveChanges();
+
+        return existingCharacteristic;
+    }
+
+
+    public void DeleteCharacteristic(Guid id)
+    {
+        _characteristicRepository.Delete(id);
+
+        _characteristicRepository.SaveChanges();
+    }
 }
