@@ -2,15 +2,12 @@
 
 namespace API.Dtos.Product;
 
-public class ProductDto
+public class ProductRequestDto
 {
-    public string Id { get; set; }
-    
-    [Required] 
+    [Required]
     public string Name { get; set; }
     [Required]
     public string Price { get; set; }
     public List<ImageDto> Images { get; set; }
-    public List<ProductCharacteristicDto> Characteristics { get; set; } = new List<ProductCharacteristicDto>();
-
+    public List<ProductCharacteristicDto> Characteristics { get; set; }
 }
