@@ -10,7 +10,7 @@ public class Product
     [Required] 
     public string Name { get; set; }
     [Required] 
-    public int Price { get; set; }
+    public string Price { get; set; }
     
     public ICollection<Image> Images { get; set; } = new List<Image>();
     public ICollection<ProductCharacteristic> ProductCharacteristics { get; set; } = new List<ProductCharacteristic>();

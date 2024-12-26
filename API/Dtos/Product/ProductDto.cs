@@ -1,10 +1,16 @@
-﻿namespace API.Dtos.Product;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.Dtos.Product;
 
 public class ProductDto
 {
     public string Id { get; set; }
+    
+    [Required] 
     public string Name { get; set; }
-    public double Price { get; set; }
+    [Required]
+    public string Price { get; set; }
     public List<ImageDto> Images { get; set; }
-    public List<ProductCharacteristicDto> Characteristics { get; set; }
+    public List<ProductCharacteristicDto> Characteristics { get; set; } = new List<ProductCharacteristicDto>();
+
 }
