@@ -29,7 +29,6 @@ public class Program
         builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(CharacteristicMappingProfile));
         builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(ProductMappingProfile));
         
-        
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IPasswordEncoder, PasswordEncoder>();
@@ -40,7 +39,6 @@ public class Program
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<ProductService>();
-        
         
         
         builder.Services.AddControllers();

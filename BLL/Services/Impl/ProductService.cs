@@ -1,5 +1,6 @@
 ﻿using BLL.Exceptions;
 using DAL.Entities;
+using DAL.Exceptions;
 using DAL.Repositories;
 
 namespace BLL.Services.Impl;
@@ -57,7 +58,7 @@ public class ProductService: IProductService
         
         if (existingProduct == null)
         {
-            throw new Exception($"Product with id {product.Id} not found");
+            throw new NotFoundException($"Product with id {product.Id} not found");
         }
         if (_productRepository.IsProductWithNameExists(product.Name))
         {
