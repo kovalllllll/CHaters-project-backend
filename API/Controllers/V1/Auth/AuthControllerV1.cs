@@ -4,6 +4,7 @@ using AutoMapper;
 using BLL.Exceptions;
 using BLL.Services;
 using DAL.Entities;
+using DAL.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers.V1.Auth;
@@ -51,14 +52,54 @@ public class AuthControllerV1 : ControllerBase
             return BadRequest(e.Message);
         }
         
-        var token = _jwtTokenService.GenerateToken(createdUser);
+        var accessToken = _jwtTokenService.GenerateToken(createdUser);
+        var refreshToken = _jwtTokenService.GenerateRefreshToken(createdUser);
+        
         var response = new LoginResponseDto
         {
             UserId = createdUser.Id.ToString(),
             Email = createdUser.Email,
-            Token = token
+            Token = accessToken,
+            RefreshToken = refreshToken
         };
         
         return Ok(response);
     }
+    
+    /// <summary>
+    /// Login an existing user
+    /// </summary>
+    /// <param name="request">Login request</param>
+    /// <response code="200">Returns the JWT token</response>
+    /// <response code="401">Invalid email or password</response>
+    [HttpPost("login")]
+    public IActionResult Login([FromBody] LoginRequestDto request)
+    {
+        //var user = _mapper.Map<User>(request);
+
+        User user;
+        try
+        {
+           user = _userService.GetUserByEmail(request.Email);
+        }
+        catch(EntityNotFoundException)
+        {
+            return Unauthorized("Invalid email or password");
+        }
+        
+        if (!_passwordEncoder.Matches(request.Password, user.Password))
+        {
+            return Unauthorized("Invalid email or password");
+        }
+
+        var accessToken = _jwtTokenService.GenerateToken(user);
+        var refreshToken = _jwtTokenService.GenerateRefreshToken(user);
+
+        var response = _mapper.Map<LoginResponseDto>(user);
+        response.Token = accessToken;
+        response.RefreshToken = refreshToken;
+
+        return Ok(response);
+    }
+    
 }

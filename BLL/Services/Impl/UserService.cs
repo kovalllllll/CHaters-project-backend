@@ -13,6 +13,11 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
     
+    public User GetUserByEmail(string email)
+    {
+        return _userRepository.GetByEmail(email);
+    }
+    
     public User CreateUser(User user)
     {
         if (_userRepository.IsUserWithEmailExists(user.Email))
@@ -26,4 +31,6 @@ public class UserService : IUserService
         
         return createdUser;
     }
+
+
 }
