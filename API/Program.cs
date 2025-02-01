@@ -39,7 +39,12 @@ public class Program
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<ProductService>();
+        builder.Services.AddScoped<IImageRepository, ImageRepository>();
+        builder.Services.AddScoped<IImageService, ImageService>();
+        builder.Services.AddScoped<ImageService>();
         
+        var bucket = builder.Configuration.GetValue<string>("FileStorage:Bucket");
+        builder.Services.AddSingleton(bucket);
         
         builder.Services.AddControllers();
         

@@ -10,7 +10,8 @@ public class ProductDto
     public string Name { get; set; }
     [Required]
     public string Price { get; set; }
-    public List<ImageDto> Images { get; set; }
+
+    public List<ImageDto> Images { get; set; } = new List<ImageDto>();
     public List<ProductCharacteristicDto> Characteristics { get; set; } = new List<ProductCharacteristicDto>();
 
 }

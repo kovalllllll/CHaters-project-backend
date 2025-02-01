@@ -2,8 +2,7 @@
 
 namespace DAL.Repositories;
 
-public interface ICharacteristicRepository:IRepository<Characteristic, Guid>
+public interface ICharacteristicRepository : IRepository<Characteristic, Guid>
 {
     bool IsCharacteristicWithNameExists(string name);
-  
 }

@@ -22,9 +22,4 @@
         <ProjectReference Include="..\DAL\DAL.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Controllers\V1\Product\" />
-      <Folder Include="Mappers\Product\" />
-    </ItemGroup>
-
 </Project>

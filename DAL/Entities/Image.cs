@@ -9,7 +9,6 @@ public class Image
     public Guid Id { get; set; } = Guid.NewGuid();
     [Required] 
     public string Name { get; set; }
-    
     [Required]
     public string ContentType { get; set; }
     [Required] 
@@ -17,8 +16,8 @@ public class Image
     [Required]
     public string Bucket { get; set; }
     [Required]
-    public Guid ProducId { get; set; }
+    public Guid ProductId { get; set; }
     
-    [ForeignKey(nameof(ProducId))]
+    [ForeignKey(nameof(ProductId))]
     public Product Product { get; set; }
 }

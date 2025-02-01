@@ -59,12 +59,12 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ProducId")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProducId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Images");
                 });
@@ -154,7 +154,7 @@ namespace DAL.Migrations
                 {
                     b.HasOne("DAL.Entities.Product", "Product")
                         .WithMany("Images")
-                        .HasForeignKey("ProducId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

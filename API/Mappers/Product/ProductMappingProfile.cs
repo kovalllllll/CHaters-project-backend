@@ -11,7 +11,7 @@ public class ProductMappingProfile : Profile
         
         CreateMap<ProductRequestDto, DAL.Entities.Product>()
             .ForMember(dest => dest.Id, opt => opt.Ignore()) 
-            .ForMember(dest => dest.Images, opt => opt.Ignore()) 
+            .ForMember(dest => dest.Images, opt => opt.MapFrom(dest=> new List<DAL.Entities.Image>()))
             .ForMember(dest => dest.ProductCharacteristics, opt => opt.Ignore());
     }
 }

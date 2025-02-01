@@ -11,6 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\Impl\" />
+      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     </ItemGroup>
 </Project>

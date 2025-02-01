@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241223031617_fix_type_of_price")]
-    partial class fix_type_of_price
+    [Migration("20250131165923_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,12 +62,12 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ProducId")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProducId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Images");
                 });
@@ -157,7 +157,7 @@ namespace DAL.Migrations
                 {
                     b.HasOne("DAL.Entities.Product", "Product")
                         .WithMany("Images")
-                        .HasForeignKey("ProducId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
