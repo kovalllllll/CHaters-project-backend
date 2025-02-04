@@ -18,5 +18,12 @@ public class ImageMappingProfile : Profile
             .ForMember(dest => dest.Bucket, opt => opt.Ignore())
             .ForMember(dest => dest.Product, opt => opt.Ignore())
             .ForMember(dest => dest.ProductId, opt => opt.Ignore());
+
+        CreateMap<ImageRequestDto, Image>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.Path, opt => opt.Ignore())
+            .ForMember(dest => dest.Bucket, opt => opt.Ignore())
+            .ForMember(dest => dest.Product, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductId, opt => opt.Ignore());
     }
 }

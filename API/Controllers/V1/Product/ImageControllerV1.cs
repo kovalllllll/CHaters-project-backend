@@ -38,8 +38,76 @@ public class ImageControllerV1 : ControllerBase
 
         // var response = _mapper.Map<ImageDto>(image);
         // return Ok(response);
-        
+
         return NoContent();
     }
-    
+
+    [HttpGet]
+    public IActionResult GetAllImagesByProductId([FromRoute] Guid productId)
+    {
+        List<Image> images;
+        try
+        {
+            images = _imageService.GetAllImagesByProductId(productId);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
+        var response = _mapper.Map<List<ImageDto>>(images);
+        return Ok(response);
+    }
+
+    [HttpGet("{imageId}")]
+    public IActionResult GetImageById([FromRoute] Guid imageId)
+    {
+        Image image;
+        try
+        {
+            image = _imageService.GetImageById(imageId);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
+        var response = _mapper.Map<ImageDto>(image);
+        return Ok(response);
+    }
+
+    [HttpPut("{imageId}")]
+    public IActionResult UpdateImage([FromRoute] Guid imageId, [FromQuery] ImageRequestDto request)
+    {
+        var image = _mapper.Map<Image>(request);
+        image.Id = imageId;
+
+        Image updatedImage;
+        try
+        {
+            updatedImage = _imageService.UpdateImage(image);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
+        var response = _mapper.Map<ImageDto>(updatedImage);
+        return Ok(response);
+    }
+
+    [HttpDelete("{imageId}")]
+    public IActionResult DeleteImage([FromRoute] Guid imageId)
+    {
+        try
+        {
+            _imageService.DeleteImage(imageId);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
+        return NoContent();
+    }
 }
