@@ -10,8 +10,12 @@ public class CharacteristicMappingProfile : Profile
     {
         CreateMap<Characteristic, CharacteristicDto>();
 
-        CreateMap<string, Characteristic>()
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src))
+        CreateMap<CharacteristicRequestDto, Characteristic>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.Id, opt => opt.Ignore());
+        CreateMap<CharacteristicUpdateDto, Characteristic>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+        
+        
     }
 }

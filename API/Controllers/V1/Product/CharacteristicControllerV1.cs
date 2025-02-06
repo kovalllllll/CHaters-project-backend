@@ -21,9 +21,9 @@ public class CharacteristicControllerV1 : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateCharacteristic([FromQuery] string name)
+    public IActionResult CreateCharacteristic([FromQuery] CharacteristicRequestDto request)
     {
-        var characteristic = _mapper.Map<Characteristic>(name);
+        var characteristic = _mapper.Map<Characteristic>(request);
 
         Characteristic createdCharacteristic;
         try
@@ -42,12 +42,10 @@ public class CharacteristicControllerV1 : ControllerBase
     [HttpGet]
     public IActionResult GetAllCharacteristics()
     {
+        List<Characteristic> characteristics;
         try
         {
-            var characteristics = _characteristicService.GetAllCharacteristics();
-            var response = _mapper.Map<List<CharacteristicDto>>(characteristics);
-
-            return Ok(response);
+            characteristics = _characteristicService.GetAllCharacteristics();
         }
         catch (NotFoundException e)
         {
@@ -57,6 +55,9 @@ public class CharacteristicControllerV1 : ControllerBase
         {
             return BadRequest(e.Message);
         }
+        
+        var response = _mapper.Map<List<CharacteristicDto>>(characteristics);
+        return Ok(response);
     }
 
     [HttpGet]
@@ -79,9 +80,9 @@ public class CharacteristicControllerV1 : ControllerBase
     
     [HttpPut]
     [Route("{id}")]
-    public IActionResult UpdateCharacteristic([FromRoute] Guid id, [FromQuery] string name)
+    public IActionResult UpdateCharacteristic([FromRoute] Guid id, [FromQuery] CharacteristicUpdateDto request)
     {
-        var characteristic = _mapper.Map<Characteristic>(name);
+        var characteristic = _mapper.Map<Characteristic>(request);
         characteristic.Id = id;
 
         Characteristic updatedCharacteristic;

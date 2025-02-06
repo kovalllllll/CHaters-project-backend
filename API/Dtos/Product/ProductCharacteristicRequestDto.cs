@@ -2,11 +2,10 @@
 
 namespace API.Dtos.Product;
 
-public class ProductCharacteristicDto
+public class ProductCharacteristicRequestDto
 {
-    public string Id { get; set; }
     [Required]
     public string Value { get; set; }
     [Required]
-    public Guid Characteristic { get; set; }
+    public Guid CharacteristicId { get; set; }
 }

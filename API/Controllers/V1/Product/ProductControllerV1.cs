@@ -83,7 +83,7 @@ public class ProductControllerV1 : ControllerBase
     
     [HttpPut]
     [Route("{id}")]
-    public IActionResult UpdateProduct([FromRoute] Guid id, [FromQuery] ProductRequestDto request)
+    public IActionResult UpdateProduct([FromRoute] Guid id, [FromQuery] ProductUpdateDto request)
     {
         var product = _mapper.Map<DAL.Entities.Product>(request);
         product.Id = id;

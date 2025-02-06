@@ -28,6 +28,8 @@ public class Program
         builder.Services.AddAutoMapper(typeof(UserMappingProfile));
         builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(CharacteristicMappingProfile));
         builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(ProductMappingProfile));
+        builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(ImageMappingProfile));
+        builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(ProductCharacteristicMappingProfile));
         
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IUserService, UserService>();
@@ -42,6 +44,9 @@ public class Program
         builder.Services.AddScoped<IImageRepository, ImageRepository>();
         builder.Services.AddScoped<IImageService, ImageService>();
         builder.Services.AddScoped<ImageService>();
+        builder.Services.AddScoped<IProductCharacteristicRepository, ProductCharacteristicRepository>();
+        builder.Services.AddScoped<IProductCharacteristicService, ProductCharacteristicService>();
+        builder.Services.AddScoped<ProductCharacteristicService>();
         
         var bucket = builder.Configuration.GetValue<string>("FileStorage:Bucket");
         builder.Services.AddSingleton(bucket);
