@@ -58,7 +58,6 @@ public class ProductControllerV1 : ControllerBase
             return BadRequest(e.Message);
         }
         
-
         var response = _mapper.Map<List<ProductDto>>(products);
         return Ok(response);
     }

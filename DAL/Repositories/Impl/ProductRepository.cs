@@ -21,11 +21,15 @@ public class ProductRepository : BaseRepository<Product, Guid>, IProductReposito
     {
         return _dbSet
             .Include(p => p.ProductCharacteristics)
+            .Include(p => p.Images)
             .FirstOrDefault(p => p.Id == id);
     }
     
     public IEnumerable<Product> GetAll()
     {
-        return _dbSet.Include(p => p.ProductCharacteristics).ToList();
+        return _dbSet
+        .Include(p => p.ProductCharacteristics)
+        .Include(p => p.Images)
+        .ToList();
     }
 }

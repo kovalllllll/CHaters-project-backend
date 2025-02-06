@@ -35,12 +35,12 @@ public class ImageService : IImageService
             Path = $"{product.Id}/{Guid.NewGuid()}-{file.FileName}",
             ProductId = product.Id
         };
-        
+
         if (_imageRepository.IsImageWithNameExists(imageEntity.Name))
         {
             throw new AlreadyExistsException($"Image with name {imageEntity.Name} already exists");
         }
-        
+
         var filePath = Path.Combine(_bucket, imageEntity.Path);
 
         var directoryPath = Path.GetDirectoryName(filePath);
@@ -53,10 +53,63 @@ public class ImageService : IImageService
         {
             file.CopyTo(stream);
         }
-        
+
         imageEntity = _imageRepository.Create(imageEntity);
         _imageRepository.SaveChanges();
+        
         product.Images.Add(imageEntity);
         _productRepository.Update(product);
+        _productRepository.SaveChanges();
+    }
+
+    public List<Image> GetAllImagesByProductId(Guid productId)
+    {
+        var product = _productRepository.GetById(productId);
+        
+        if (product == null)
+        {
+            throw new NotFoundException($"Product with id {productId} not found");
+        }
+        
+        return product.Images.ToList();
+    }
+
+    public Image GetImageById(Guid imageId)
+    {
+        var image = _imageRepository.GetById(imageId);
+
+        if (image == null)
+        {
+            throw new NotFoundException($"Image with id {imageId} not found");
+        }
+
+        return image;
+    }
+
+    public Image UpdateImage(Image image)
+    {
+        var imageEntity = _imageRepository.GetById(image.Id);
+        
+        if(imageEntity == null)
+        {
+            throw new NotFoundException($"Image with id {image.Id} not found");
+        }
+        if(_imageRepository.IsImageWithNameExists(image.Name))
+        {
+            throw new AlreadyExistsException($"Image with name {image.Name} already exists");
+        }
+        
+        imageEntity.Name = image.Name;
+
+        imageEntity = _imageRepository.Update(imageEntity);
+        _imageRepository.SaveChanges();
+
+        return imageEntity;
+    }
+
+    public void DeleteImage(Guid imageId)
+    {
+        _imageRepository.Delete(imageId);
+        _imageRepository.SaveChanges();
     }
 }
