@@ -13,6 +13,7 @@ public class ProductCharacteristic
     
     [Required]
     public Guid ProductId { get; set; }
+    
     [ForeignKey(nameof(ProductId))]
     public Product Product { get; set; }
     
@@ -21,4 +22,4 @@ public class ProductCharacteristic
     
     [ForeignKey(nameof(CharacteristicId))]
     public Characteristic Characteristic { get; set; }
-}
+} 

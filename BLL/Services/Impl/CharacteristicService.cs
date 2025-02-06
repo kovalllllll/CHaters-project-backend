@@ -60,9 +60,12 @@ public class CharacteristicService : ICharacteristicService
         {
             throw new NotFoundException($"Characteristic with id {characteristic.Id} not found");
         }
-        
-        existingCharacteristic.Name = characteristic.Name;
 
+        if (!string.IsNullOrEmpty(characteristic.Name))
+        {
+            existingCharacteristic.Name = characteristic.Name;
+        }
+        
         _characteristicRepository.Update(existingCharacteristic);
         _characteristicRepository.SaveChanges();
 

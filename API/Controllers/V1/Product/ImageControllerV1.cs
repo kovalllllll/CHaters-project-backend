@@ -26,7 +26,6 @@ public class ImageControllerV1 : ControllerBase
     [HttpPost]
     public IActionResult UploadImage([FromForm] IFormFile file, [FromRoute] Guid productId)
     {
-        // Image image;
         try
         {
             _imageService.UploadImage(file, productId);
@@ -35,10 +34,7 @@ public class ImageControllerV1 : ControllerBase
         {
             return BadRequest(e.Message);
         }
-
-        // var response = _mapper.Map<ImageDto>(image);
-        // return Ok(response);
-
+        
         return NoContent();
     }
 
@@ -107,6 +103,7 @@ public class ImageControllerV1 : ControllerBase
         {
             return BadRequest(e.Message);
         }
+
 
         return NoContent();
     }

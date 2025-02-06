@@ -64,9 +64,16 @@ public class ProductService: IProductService
         {
             throw new AlreadyExistException($"Product with name {product.Name} already exists");
         }
+
+        if (!string.IsNullOrEmpty(product.Name))
+        {
+            existingProduct.Name = product.Name;
+        }
         
-        existingProduct.Name = product.Name;
-        existingProduct.Price = product.Price;
+        if (!string.IsNullOrEmpty(product.Price))
+        {
+            existingProduct.Price = product.Price;
+        }
         
         _productRepository.Update(existingProduct);
         _productRepository.SaveChanges();

@@ -19,11 +19,17 @@ public class ProductRepository : BaseRepository<Product, Guid>, IProductReposito
 
     public Product GetById(Guid id)
     {
-        return _dbSet.Include(p => p.Images).FirstOrDefault(p => p.Id == id);
+        return _dbSet
+            .Include(p => p.ProductCharacteristics)
+            .Include(p => p.Images)
+            .FirstOrDefault(p => p.Id == id);
     }
     
     public IEnumerable<Product> GetAll()
     {
-        return _dbSet.Include(p => p.Images).ToList();
+        return _dbSet
+        .Include(p => p.ProductCharacteristics)
+        .Include(p => p.Images)
+        .ToList();
     }
 }
