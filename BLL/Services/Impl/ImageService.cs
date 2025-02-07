@@ -98,9 +98,12 @@ public class ImageService : IImageService
         {
             throw new AlreadyExistsException($"Image with name {image.Name} already exists");
         }
-        
-        imageEntity.Name = image.Name;
 
+        if (!string.IsNullOrEmpty(image.Name))
+        {
+            imageEntity.Name = image.Name;
+        }
+        
         imageEntity = _imageRepository.Update(imageEntity);
         _imageRepository.SaveChanges();
 

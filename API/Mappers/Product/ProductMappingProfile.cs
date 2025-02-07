@@ -15,7 +15,8 @@ public class ProductMappingProfile : Profile
                 Name = image.Name,
                 ContentType = image.ContentType,
                 Url = image.Path
-            }).ToList()));
+            }).ToList()))
+            .ForMember(dest => dest.ProductCharacteristics, opt => opt.MapFrom(src => src.ProductCharacteristics));
         
         CreateMap<ProductRequestDto, DAL.Entities.Product>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
