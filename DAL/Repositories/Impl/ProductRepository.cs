@@ -21,6 +21,7 @@ public class ProductRepository : BaseRepository<Product, Guid>, IProductReposito
     {
         return _dbSet
             .Include(p => p.ProductCharacteristics)
+                .ThenInclude(pc => pc.Characteristic)
             .Include(p => p.Images)
             .FirstOrDefault(p => p.Id == id);
     }
@@ -29,6 +30,7 @@ public class ProductRepository : BaseRepository<Product, Guid>, IProductReposito
     {
         return _dbSet
         .Include(p => p.ProductCharacteristics)
+            .ThenInclude(pc => pc.Characteristic)
         .Include(p => p.Images)
         .ToList();
     }

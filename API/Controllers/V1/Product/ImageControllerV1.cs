@@ -73,9 +73,9 @@ public class ImageControllerV1 : ControllerBase
     }
 
     [HttpPut("{imageId}")]
-    public IActionResult UpdateImage([FromRoute] Guid imageId, [FromQuery] ImageRequestDto request)
+    public IActionResult UpdateImage([FromRoute] Guid imageId, [FromQuery] ImageUpdateDto update)
     {
-        var image = _mapper.Map<Image>(request);
+        var image = _mapper.Map<Image>(update);
         image.Id = imageId;
 
         Image updatedImage;
