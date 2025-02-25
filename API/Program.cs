@@ -32,6 +32,8 @@ public class Program
         builder.Services.AddScoped<IPasswordEncoder, PasswordEncoder>();
         builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
         
+        
+        
         builder.Services.AddControllers();
         
         var app = builder.Build();

@@ -24,7 +24,7 @@ public class UserRepository : BaseRepository<User, Guid>, IUserRepository
 
         if (user == null)
         {
-            throw new EntityNotFoundException($"User with email {email} not exist");
+            throw new NotFoundException($"User with email {email} not exist");
         }
 
         return user;

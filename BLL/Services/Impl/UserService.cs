@@ -23,7 +23,7 @@ public class UserService : IUserService
     {
         if (_userRepository.IsUserWithEmailExists(user.Email))
         {
-            throw new UserAlreadyExistException($"User with email '{user.Email}' already exists");
+            throw new AlreadyExistException($"User with email '{user.Email}' already exists");
         }
 
         var createdUser = _userRepository.Create(user);
@@ -38,7 +38,7 @@ public class UserService : IUserService
         var users = _userRepository.GetAll().ToList();
         if (users.Count == 0)
         {
-            throw new EntityNotFoundException("No users found");
+            throw new NotFoundException("No users found");
         }
 
         return users;
@@ -49,7 +49,7 @@ public class UserService : IUserService
         var user = _userRepository.GetById(id);
         if (user == null)
         {
-            throw new EntityNotFoundException($"User with id {id} not found");
+            throw new NotFoundException($"User with id {id} not found");
         }
 
         return user;
@@ -60,12 +60,12 @@ public class UserService : IUserService
         var existingUser = _userRepository.GetById(user.Id);
         if (existingUser == null)
         {
-            throw new EntityNotFoundException($"User with id {user.Id} not found");
+            throw new NotFoundException($"User with id {user.Id} not found");
         }
 
         if (existingUser.Email != user.Email && _userRepository.IsUserWithEmailExists(user.Email))
         {
-            throw new UserAlreadyExistException($"User with email '{user.Email}' already exists");
+            throw new AlreadyExistException($"User with email '{user.Email}' already exists");
         }
 
         if (!string.IsNullOrEmpty(user.Email))

@@ -47,7 +47,7 @@ public class AuthControllerV1 : ControllerBase
         {
             createdUser = _userService.CreateUser(user);
         }
-        catch (UserAlreadyExistException e)
+        catch (AlreadyExistException e)
         {
             return BadRequest(e.Message);
         }
@@ -80,7 +80,7 @@ public class AuthControllerV1 : ControllerBase
         {
             user = _userService.GetUserByEmail(request.Email);
         }
-        catch (EntityNotFoundException)
+        catch (NotFoundException)
         {
             return Unauthorized("Invalid email or password");
         }
