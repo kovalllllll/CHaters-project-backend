@@ -29,7 +29,7 @@ public class AuthControllerV1 : ControllerBase
         _jwtTokenService = jwtTokenService;
         _mapper = mapper;
     }
-    
+
     /// <summary>
     /// Register a new user
     /// </summary>
@@ -39,10 +39,10 @@ public class AuthControllerV1 : ControllerBase
     [HttpPost("register")]
     public IActionResult Register([FromBody] RegistrationRequestDto request)
     {
-        var user = _mapper.Map<User>(request);
+        var user = _mapper.Map<DAL.Entities.User>(request);
         user.Password = _passwordEncoder.Encode(request.Password);
-        
-        User createdUser;
+
+        DAL.Entities.User createdUser;
         try
         {
             createdUser = _userService.CreateUser(user);
@@ -51,21 +51,19 @@ public class AuthControllerV1 : ControllerBase
         {
             return BadRequest(e.Message);
         }
-        
+
         var accessToken = _jwtTokenService.GenerateToken(createdUser);
         var refreshToken = _jwtTokenService.GenerateRefreshToken(createdUser);
-        
+
         var response = new LoginResponseDto
         {
-            UserId = createdUser.Id.ToString(),
-            Email = createdUser.Email,
             Token = accessToken,
             RefreshToken = refreshToken
         };
-        
+
         return Ok(response);
     }
-    
+
     /// <summary>
     /// Login an existing user
     /// </summary>
@@ -77,16 +75,16 @@ public class AuthControllerV1 : ControllerBase
     {
         //var user = _mapper.Map<User>(request);
 
-        User user;
+        DAL.Entities.User user;
         try
         {
-           user = _userService.GetUserByEmail(request.Email);
+            user = _userService.GetUserByEmail(request.Email);
         }
-        catch(EntityNotFoundException)
+        catch (EntityNotFoundException)
         {
             return Unauthorized("Invalid email or password");
         }
-        
+
         if (!_passwordEncoder.Matches(request.Password, user.Password))
         {
             return Unauthorized("Invalid email or password");
@@ -101,5 +99,10 @@ public class AuthControllerV1 : ControllerBase
 
         return Ok(response);
     }
-    
+
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        return Ok(new { message = "Logged out successfully" });
+    }
 }
