@@ -1,0 +1,118 @@
+﻿using API.Dtos.Product;
+using AutoMapper;
+using BLL.Services.Impl;
+using DAL.Entities;
+using DAL.Exceptions;
+using Microsoft.AspNetCore.Mvc;
+
+namespace API.Controllers.V1.Product;
+
+[ApiController]
+[Route("api/v1/product/characteristics")]
+public class CharacteristicControllerV1 : ControllerBase
+{
+    private readonly CharacteristicService _characteristicService;
+    private readonly IMapper _mapper;
+
+    public CharacteristicControllerV1(CharacteristicService characteristicService, IMapper mapper)
+    {
+        _characteristicService = characteristicService;
+        _mapper = mapper;
+    }
+
+    [HttpPost]
+    public IActionResult CreateCharacteristic([FromQuery] CharacteristicRequestDto request)
+    {
+        var characteristic = _mapper.Map<Characteristic>(request);
+
+        Characteristic createdCharacteristic;
+        try
+        {
+            createdCharacteristic = _characteristicService.CreateCharacteristic(characteristic);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
+        var response = _mapper.Map<CharacteristicDto>(createdCharacteristic);
+        return Ok(response);
+    }
+
+    [HttpGet]
+    public IActionResult GetAllCharacteristics()
+    {
+        List<Characteristic> characteristics;
+        try
+        {
+            characteristics = _characteristicService.GetAllCharacteristics();
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        
+        var response = _mapper.Map<List<CharacteristicDto>>(characteristics);
+        return Ok(response);
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    public IActionResult GetCharacteristicById([FromRoute] Guid id)
+    {
+        Characteristic characteristic;
+        try
+        {
+            characteristic = _characteristicService.GetCharacteristicById(id);
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+
+        var response = _mapper.Map<CharacteristicDto>(characteristic);
+        return Ok(response);
+    }
+    
+    [HttpPut]
+    [Route("{id}")]
+    public IActionResult UpdateCharacteristic([FromRoute] Guid id, [FromQuery] CharacteristicUpdateDto request)
+    {
+        var characteristic = _mapper.Map<Characteristic>(request);
+        characteristic.Id = id;
+
+        Characteristic updatedCharacteristic;
+        try
+        {
+            updatedCharacteristic = _characteristicService.UpdateCharacteristic(characteristic);
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+
+        var response = _mapper.Map<CharacteristicDto>(updatedCharacteristic);
+        return Ok(response);
+    }
+    
+
+    [HttpDelete]
+    [Route("{id}")]
+    public IActionResult DeleteCharacteristic([FromRoute] Guid id)
+    {
+        try
+        {
+            _characteristicService.DeleteCharacteristic(id);
+        }
+        catch (NotFoundException)
+        {
+            //ignored
+        }
+
+        return NoContent();
+    }
+}
