@@ -16,10 +16,28 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
+        // Add logging
+        builder.Logging.AddConsole();
+        builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
+        // Setting up the database
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+        });
+
+        // Setting up CORS
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowFrontend",
+                policy =>
+                {
+                    policy.WithOrigins("http://localhost:5173") // FrontEnd URL
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials(); // If you need to support cookies or authorization
+                });
         });
         
         builder.Services.AddEndpointsApiExplorer();
@@ -63,6 +81,12 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseRouting();
+
+        // Using CORS should come before app.UseAuthorization()
+        app.UseCors("AllowFrontend");
+
+        // app.UseAuthorization();
+
         app.MapControllers();
         app.Run();
     }
