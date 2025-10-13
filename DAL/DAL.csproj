@@ -8,11 +8,20 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-rc.2.24474.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-rc.2.24474.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0-rc.2"/>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-rc.2"/>
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0"/>
         <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="9.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+      <Folder Include="Repositories\Impl\" />
     </ItemGroup>
 
 </Project>

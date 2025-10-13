@@ -24,7 +24,7 @@ public abstract class BaseRepository<T, TId> : IRepository<T, TId> where T : cla
         var entity = _dbSet.Find(id);
         if (entity == null)
         {
-            throw new EntityNotFoundException($"{typeof(T).Name} with id {id} not found");
+            throw new NotFoundException($"{typeof(T).Name} with id {id} not found");
         }
 
         return entity;
