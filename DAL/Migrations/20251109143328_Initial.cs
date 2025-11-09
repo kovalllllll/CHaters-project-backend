@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class uploadimages : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,7 +77,7 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductCharacteristic",
+                name: "ProductCharacteristics",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -87,15 +87,15 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductCharacteristic", x => x.Id);
+                    table.PrimaryKey("PK_ProductCharacteristics", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductCharacteristic_Characteristics_CharacteristicId",
+                        name: "FK_ProductCharacteristics_Characteristics_CharacteristicId",
                         column: x => x.CharacteristicId,
                         principalTable: "Characteristics",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductCharacteristic_Product_ProductId",
+                        name: "FK_ProductCharacteristics_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
@@ -108,13 +108,13 @@ namespace DAL.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductCharacteristic_CharacteristicId",
-                table: "ProductCharacteristic",
+                name: "IX_ProductCharacteristics_CharacteristicId",
+                table: "ProductCharacteristics",
                 column: "CharacteristicId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductCharacteristic_ProductId",
-                table: "ProductCharacteristic",
+                name: "IX_ProductCharacteristics_ProductId",
+                table: "ProductCharacteristics",
                 column: "ProductId");
         }
 
@@ -125,7 +125,7 @@ namespace DAL.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
-                name: "ProductCharacteristic");
+                name: "ProductCharacteristics");
 
             migrationBuilder.DropTable(
                 name: "Users");

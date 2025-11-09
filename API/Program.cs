@@ -34,12 +34,12 @@ public class Program
                 policy =>
                 {
                     policy.WithOrigins("http://localhost:5173") // FrontEnd URL
-                          .AllowAnyHeader()
-                          .AllowAnyMethod()
-                          .AllowCredentials(); // If you need to support cookies or authorization
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials(); // If you need to support cookies or authorization
                 });
         });
-        
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
@@ -48,7 +48,7 @@ public class Program
         builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(ProductMappingProfile));
         builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(ImageMappingProfile));
         builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(ProductCharacteristicMappingProfile));
-        
+
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IPasswordEncoder, PasswordEncoder>();
@@ -65,14 +65,14 @@ public class Program
         builder.Services.AddScoped<IProductCharacteristicRepository, ProductCharacteristicRepository>();
         builder.Services.AddScoped<IProductCharacteristicService, ProductCharacteristicService>();
         builder.Services.AddScoped<ProductCharacteristicService>();
-        
+
         var bucket = builder.Configuration.GetValue<string>("FileStorage:Bucket");
         builder.Services.AddSingleton(bucket);
-        
+
         builder.Services.AddControllers();
-        
+
         var app = builder.Build();
-        
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

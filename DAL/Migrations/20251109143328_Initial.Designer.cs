@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250201111823_upload-images")]
-    partial class uploadimages
+    [Migration("20251109143328_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,7 +113,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCharacteristic");
+                    b.ToTable("ProductCharacteristics");
                 });
 
             modelBuilder.Entity("DAL.Entities.User", b =>
